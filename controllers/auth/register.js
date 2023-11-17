@@ -21,11 +21,11 @@ async function register(req, res, next) {
 
     const passwordHash = await bcrypt.hash(password, 10);
 
-    await User.create({ email, password: passwordHash });
+    await User.create({ email, password: passwordHash, subscription });
     res.status(201).send({
       user: {
-        email,
-        subscription: "starter",
+        email: user.email,
+        subscription: user.subscription,
       },
     });
   } catch (error) {

@@ -2,13 +2,10 @@ const User = require("../../models/user");
 const { validateRegAndLog } = require("../../validation/auth");
 
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 async function login(req, res, next) {
-  const { email, password } = req.body;
-
-  const responseIfMistake = res
-    .status(401)
-    .send({ message: "Email or password is incorrect" });
+  const { email, password, subscription } = req.body;
 
   try {
     const response = validateRegAndLog(req.body);
@@ -20,24 +17,32 @@ async function login(req, res, next) {
     const user = await User.findOne({ email }).exec();
 
     if (user === null) {
-      return responseIfMistake;
+      return res
+        .status(401)
+        .send({ message: "Email or password is incorrect" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (isMatch === false) {
-      return responseIfMistake;
+      return res
+        .status(401)
+        .send({ message: "Email or password is incorrect" });
     }
 
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "2h",
+    });
+
     res.status(200).send({
-      token: "exampletoken",
+      token,
       user: {
-        email,
-        subscription: "starter",
+        email: user.email,
+        subscription: user.subscription,
       },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 }
 
