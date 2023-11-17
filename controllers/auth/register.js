@@ -1,10 +1,10 @@
 const bcrypt = require("bcrypt");
 
 const User = require("../../models/user");
-const { validateRegistration } = require("../../validation/auth");
+const { validateRegAndLog } = require("../../validation/auth");
 
 async function register(req, res, next) {
-  const response = validateRegistration(req.body);
+  const response = validateRegAndLog(req.body);
 
   if (typeof response.error !== "undefined") {
     return res.status(400).send({ message: "missing required fields" });

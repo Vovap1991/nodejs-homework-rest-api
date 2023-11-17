@@ -1,6 +1,6 @@
 const Joi = require("joi");
 
-function validateRegistration(user) {
+function validateRegAndLog(user) {
   const validationSchema = Joi.object({
     email: Joi.string().required(),
     password: Joi.string().required(),
@@ -10,4 +10,4 @@ function validateRegistration(user) {
   return validationSchema.validate(user);
 }
 
-module.exports = { validateRegistration };
+module.exports = { validateRegAndLog };
