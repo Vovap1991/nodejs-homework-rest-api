@@ -1,5 +1,5 @@
+const contact = require("../../models/contact");
 const Contact = require("../../models/contact");
-const Joi = require("joi");
 
 const { validateContact } = require("../../validation/contacts");
 
@@ -9,6 +9,7 @@ async function createContact(req, res, next) {
     email: req.body.email,
     phone: req.body.phone,
     favorite: req.body.favorite,
+    owner: req.user.id,
   };
 
   const response = validateContact(contact);

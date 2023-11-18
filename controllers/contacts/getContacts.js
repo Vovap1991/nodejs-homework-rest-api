@@ -2,7 +2,7 @@ const Contact = require("../../models/contact");
 
 async function getContacts(req, res, next) {
   try {
-    const contacts = await Contact.find().exec();
+    const contacts = await Contact.find({ owner: req.user.id }).exec();
     res.status(200).json(contacts);
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error" });

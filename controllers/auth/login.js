@@ -34,6 +34,8 @@ async function login(req, res, next) {
       expiresIn: "2h",
     });
 
+    await User.findByIdAndUpdate(user._id, { token }).exec();
+
     res.status(200).send({
       token,
       user: {
