@@ -1,5 +1,7 @@
 const jwt = require("jsonwebtoken");
 
+const User = require("../models/user");
+
 function auth(req, res, next) {
   const authHeader = req.headers["authorization"];
 
@@ -13,14 +15,29 @@ function auth(req, res, next) {
     return res.status(401).send({ message: "Not authorized" });
   }
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, decode) => {
+  jwt.verify(token, process.env.JWT_SECRET, async (err, decode) => {
     if (err) {
       return res.status(401).send({ message: "Not authorized" });
     }
 
-    req.user = decode;
+    try {
+      req.user = decode;
 
-    next();
+      const user = await User.findById(decode.id).exec();
+
+      if (user === null) {
+        return res.status(401).send({ message: "Not authorized" });
+      }
+
+      if (user.token !== token) {
+        return res.status(401).send({ message: "Not authorized" });
+      }
+      req.user = { id: user._id };
+
+      next();
+    } catch (error) {
+      next(error);
+    }
   });
 }
 
