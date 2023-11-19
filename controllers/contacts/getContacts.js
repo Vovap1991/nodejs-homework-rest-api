@@ -2,10 +2,16 @@ const Contact = require("../../models/contact");
 
 async function getContacts(req, res, next) {
   try {
-    const { page = 1, limit = 20 } = req.query;
+    const { page = 1, limit = 20, favorite } = req.query;
     const skip = (page - 1) * limit;
 
-    const contacts = await Contact.find({ owner: req.user.id }, " ", {
+    const query = { owner: req.user.id };
+
+    if (favorite !== undefined) {
+      query.favorite = favorite === "true";
+    }
+
+    const contacts = await Contact.find(query, " ", {
       skip,
       limit: Number(limit),
     }).exec();
