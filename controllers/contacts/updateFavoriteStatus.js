@@ -17,6 +17,16 @@ async function updateStatusContact(req, res, next) {
   }
 
   try {
+    const contact = await Contact.findById(contactId);
+
+    if (contact === null) {
+      return res.status(404).json({ message: "Not Found" });
+    }
+
+    if (contact.owner.toString() !== req.user.id) {
+      return res.status(403).json({ message: "Forbidden" });
+    }
+
     const result = await Contact.findByIdAndUpdate(contactId, contact, {
       new: true,
     });
