@@ -4,7 +4,7 @@ async function deleteContact(req, res, next) {
   const { contactId } = req.params;
 
   try {
-    const contact = Contact.findById(contactId);
+    const contact = await Contact.findById(contactId);
 
     if (contact === null) {
       return res.status(404).json({ message: "Not found" });

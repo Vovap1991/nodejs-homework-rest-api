@@ -7,6 +7,7 @@ function validateContact(contact) {
     email: Joi.string().email(),
     phone: Joi.string(),
     favorite: Joi.boolean(),
+    owner: Joi.string(),
   });
 
   return validationSchema.validate(contact);

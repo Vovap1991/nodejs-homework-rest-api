@@ -4,7 +4,7 @@ const Contact = require("../../models/contact");
 const { validateContact } = require("../../validation/contacts");
 
 async function createContact(req, res, next) {
-  const contact = { ...req.body, owner: req.user.id };
+  const contact = { ...req.body, owner: req.user.id.toString() };
 
   const response = validateContact(contact);
   console.log(response);
