@@ -1,19 +1,15 @@
 const Contact = require("../../models/contact");
-const Joi = require("joi");
 
 const { validateContact } = require("../../validation/contacts");
 
 async function updateContact(req, res, next) {
   const { contactId } = req.params;
 
-  const contact = {
-    name: req.body.name,
-    email: req.body.email,
-    phone: req.body.phone,
-    favorite: req.body.favorite,
+  const updatedContact = {
+    ...req.body,
   };
 
-  const response = validateContact(contact);
+  const response = validateContact(updatedContact);
 
   if (typeof response.error !== "undefined") {
     return res.status(400).json({ message: "missing required name field" });
@@ -21,6 +17,7 @@ async function updateContact(req, res, next) {
 
   try {
     const contact = await Contact.findById(contactId);
+    console.log(contact);
 
     if (contact === null) {
       return res.status(404).json({ message: "Not Found" });
@@ -30,7 +27,7 @@ async function updateContact(req, res, next) {
       return res.status(403).json({ message: "Forbidden" });
     }
 
-    const result = await Contact.findByIdAndUpdate(contactId, contact, {
+    const result = await Contact.findByIdAndUpdate(contactId, updatedContact, {
       new: true,
     });
 

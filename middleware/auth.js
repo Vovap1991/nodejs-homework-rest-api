@@ -32,7 +32,6 @@ function auth(req, res, next) {
       if (user.token !== token) {
         return res.status(401).send({ message: "Not authorized" });
       }
-      // req.user = { id: user._id, user };
       req.user = user;
 
       next();
