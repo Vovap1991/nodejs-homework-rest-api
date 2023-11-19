@@ -4,7 +4,7 @@ const crypto = require("node:crypto");
 
 const contactSchema = require("../../validation/contacts");
 
-const ContactControllers = require("../../controllers/contacts");
+const ContactControllers = require("../../controllers/contacts/index");
 
 const router = express.Router();
 
