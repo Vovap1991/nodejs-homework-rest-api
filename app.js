@@ -19,7 +19,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/auth", authRouter);
-app.use("/api/users", userRouter);
+app.use("/api/users", auth, userRouter);
 app.use("/api/contacts", auth, contactsRouter);
 
 app.use((req, res) => {
