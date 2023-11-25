@@ -1,3 +1,4 @@
+const { string } = require("joi");
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
@@ -20,6 +21,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
+    avatarURL: String,
   },
   {
     versionKey: false,
