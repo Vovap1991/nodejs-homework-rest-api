@@ -7,6 +7,6 @@ const userController = require("../../controllers/users/index");
 
 router.get("/current", auth, userController.getCurrent);
 router.patch("/", auth, userController.updateSubscription);
-router.patch("/avatars", userController.uploadAvatar);
+router.patch("/avatars", auth, userController.uploadAvatar);
 
 module.exports = router;
