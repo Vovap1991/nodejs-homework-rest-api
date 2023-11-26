@@ -4,6 +4,8 @@ const logger = require("morgan");
 const cors = require("cors");
 require("./db");
 
+const path = require("path");
+
 const contactsRouter = require("./routes/api/contacts");
 const userRouter = require("./routes/users/users");
 const authRouter = require("./routes/auth/auth");
@@ -18,8 +20,10 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 
+app.use("/avatars", express.static(path.join(__dirname, "public", "avatars")));
+
 app.use("/api/auth", authRouter);
-app.use("/api/users", userRouter);
+app.use("/api/users", auth, userRouter);
 app.use("/api/contacts", auth, contactsRouter);
 
 app.use((req, res) => {
