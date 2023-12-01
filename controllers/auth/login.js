@@ -30,6 +30,10 @@ async function login(req, res, next) {
         .send({ message: "Email or password is incorrect" });
     }
 
+    if (user.verify !== true) {
+      res.status(401).send({ message: "Your account is not verified" });
+    }
+
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "2h",
     });
