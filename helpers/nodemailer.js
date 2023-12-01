@@ -1,6 +1,4 @@
-require("dotenv").config();
-
-const nodemailre = require("nodemailer");
+const nodemailer = require("nodemailer");
 
 const transport = nodemailer.createTransport({
   host: "sandbox.smtp.mailtrap.io",
@@ -11,15 +9,9 @@ const transport = nodemailer.createTransport({
   },
 });
 
-const message = {
-  to: process.env.EMAIL_ADDRESS,
-  from: process.env.EMAIL_ADDRESS,
-  subject: "Test email from Vova",
-  html: "<h1>This is testing email</h1>",
-  text: "This is testing email",
-};
+function sendEmail(message) {
+  message.from = "panchenkotravel@gmail.com";
+  return transport.sendMail(message);
+}
 
-transport
-  .sendMail(message)
-  .then((response) => console.log(response))
-  .catch((error) => console.error(error));
+module.exports = sendEmail;

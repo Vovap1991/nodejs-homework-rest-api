@@ -1,6 +1,8 @@
 const bcrypt = require("bcrypt");
 const gravatar = require("gravatar");
 
+const { sendEmail } = require("../../helpers/index");
+
 const User = require("../../models/user");
 const { validateRegAndLog } = require("../../validation/auth");
 
@@ -22,6 +24,13 @@ async function register(req, res, next) {
 
     const passwordHash = await bcrypt.hash(password, 10);
     const avatarURL = gravatar.url(email);
+
+    await sendEmail({
+      to: email,
+      subject: "Welcome to your own Contacts book",
+      html: 'To confirm your registration please click the <a href="">link<a/>',
+      text: "To confirm your registration please open the link ...",
+    });
 
     await User.create({ email, password: passwordHash, avatarURL });
     res.status(201).send({
